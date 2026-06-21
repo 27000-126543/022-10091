@@ -1,42 +1,27 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import TagFilter from '@/components/TagFilter'
-import { mockLabelGroups, mockFilterPresets } from '@/data/labels'
-import { mockCustomers } from '@/data/customers'
-import { useFilterStore } from '@/store/useFilterStore'
+import { mockFilterPresets } from '@/data/labels'
+import { useAppStore } from '@/store/useAppStore'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 
 export default function FilterPage() {
-  const { selectedFilters, excludeSensitive, toggleFilter, setExcludeSensitive, resetFilters } = useFilterStore()
-  const [activePreset, setActivePreset] = useState<string | null>(null)
-  const [labelGroups] = useState(mockLabelGroups)
+  const labelGroups = useAppStore((s) => s.labelGroups)
+  const selectedFilters = useAppStore((s) => s.selectedFilters)
+  const excludeSensitive = useAppStore((s) => s.excludeSensitive)
+  const activePreset = useAppStore((s) => s.activePreset)
+  const toggleFilter = useAppStore((s) => s.toggleFilter)
+  const setExcludeSensitive = useAppStore((s) => s.setExcludeSensitive)
+  const resetFilters = useAppStore((s) => s.resetFilters)
+  const setFilters = useAppStore((s) => s.setFilters)
+  const setActivePreset = useAppStore((s) => s.setActivePreset)
+  const getFilteredCustomers = useAppStore((s) => s.getFilteredCustomers)
+  const customers = useAppStore((s) => s.customers)
 
-  const resultCount = useMemo(() => {
-    let filtered = mockCustomers
-    const projectFilters = selectedFilters['project'] || []
-    const stageFilters = selectedFilters['stage'] || []
-    const priceFilters = selectedFilters['price'] || []
-    const activityFilters = selectedFilters['activity'] || []
-
-    if (projectFilters.length > 0) {
-      filtered = filtered.filter((c) => c.consultProjects.some((p) => projectFilters.includes(p)))
-    }
-    if (stageFilters.length > 0) {
-      filtered = filtered.filter((c) => stageFilters.includes(c.surgeryStage))
-    }
-    if (priceFilters.length > 0) {
-      filtered = filtered.filter((c) => priceFilters.includes(c.priceSensitivity))
-    }
-    if (activityFilters.length > 0) {
-      filtered = filtered.filter((c) => activityFilters.includes(c.activityLevel))
-    }
-    if (excludeSensitive) {
-      filtered = filtered.filter((c) => !c.isSensitive)
-    }
-    return filtered.length
-  }, [selectedFilters, excludeSensitive])
+  const filteredCustomers = useMemo(() => getFilteredCustomers(), [selectedFilters, excludeSensitive, customers])
+  const resultCount = filteredCustomers.length
 
   const activeFilterNames = useMemo(() => {
     const names: string[] = []
@@ -49,7 +34,6 @@ export default function FilterPage() {
   const handleToggle = useCallback(
     (groupId: string, optionName: string) => {
       toggleFilter(groupId, optionName)
-      setActivePreset(null)
     },
     [toggleFilter]
   )
@@ -57,12 +41,9 @@ export default function FilterPage() {
   const handlePresetClick = useCallback(
     (preset: typeof mockFilterPresets[0]) => {
       setActivePreset(preset.id)
-      resetFilters()
-      Object.entries(preset.filters).forEach(([groupId, options]) => {
-        options.forEach((opt) => toggleFilter(groupId, opt))
-      })
+      setFilters(preset.filters)
     },
-    [resetFilters, toggleFilter]
+    [setFilters, setActivePreset]
   )
 
   const handleApply = () => {
@@ -121,7 +102,7 @@ export default function FilterPage() {
         <View className={styles.excludeRow}>
           <View>
             <Text className={styles.excludeLabel}>排除敏感客群</Text>
-            <Text className={styles.excludeDesc}>过滤投诉风险、孕期等敏感客户</Text>
+            <Text className={styles.excludeDesc}>过滤投诉风险、孕期等敏感客户及已退订客户</Text>
           </View>
           <View
             className={classnames(styles.toggle, excludeSensitive && styles.toggleActive)}

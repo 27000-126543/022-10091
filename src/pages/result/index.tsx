@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { mockCampaignResults, mockCustomerActions, mockTransactionFeedbacks } from '@/data/results'
+import { useAppStore } from '@/store/useAppStore'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 
@@ -18,18 +19,26 @@ const actionStyleMap: Record<string, string> = {
 export default function ResultPage() {
   const [actionTab, setActionTab] = useState<ActionTab>('all')
   const latestResult = mockCampaignResults[0]
+  const markCustomerUnsubscribed = useAppStore((s) => s.markCustomerUnsubscribed)
+  const customers = useAppStore((s) => s.customers)
 
   const filteredActions = actionTab === 'all'
     ? mockCustomerActions
     : mockCustomerActions.filter((a) => a.actionType === actionTab)
 
   const handleMarkUnsubscribe = (customerId: string, customerName: string) => {
+    const alreadyUnsub = customers.find((c) => c.id === customerId)?.unsubscribed
+    if (alreadyUnsub) {
+      Taro.showToast({ title: `${customerName}已是退订状态`, icon: 'none' })
+      return
+    }
     Taro.showModal({
       title: '标记退订意向',
-      content: `确认标记${customerName}为退订意向客户？`,
+      content: `确认标记${customerName}为退订意向客户？标记后群发将自动排除该客户。`,
       success: (res) => {
         if (res.confirm) {
-          Taro.showToast({ title: '已标记', icon: 'success' })
+          markCustomerUnsubscribed(customerId)
+          Taro.showToast({ title: '已标记退订', icon: 'success' })
           console.info('[Result] Marked unsubscribe:', customerId)
         }
       }

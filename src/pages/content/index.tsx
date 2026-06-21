@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import classnames from 'classnames'
 import ContentCard from '@/components/ContentCard'
 import { mockContents, mockCoupons } from '@/data/contents'
+import { useAppStore } from '@/store/useAppStore'
 import type { ContentType } from '@/types/content'
 import styles from './index.module.scss'
 
@@ -17,6 +18,7 @@ const contentTabs: { key: ContentType | 'all'; label: string }[] = [
 export default function ContentPage() {
   const [activeTab, setActiveTab] = useState<ContentType | 'all'>('all')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const setSelectedContent = useAppStore((s) => s.setSelectedContent)
 
   const filteredContents = useMemo(() => {
     if (activeTab === 'all') return mockContents
@@ -34,8 +36,18 @@ export default function ContentPage() {
       Taro.showToast({ title: '请先选择内容', icon: 'none' })
       return
     }
+    const selectedItems = mockContents.filter((c) => selectedIds.includes(c.id))
+    const couponIds = selectedItems
+      .filter((c) => c.couponId)
+      .map((c) => c.couponId as string)
+
+    setSelectedContent({ items: selectedItems, couponIds })
+    console.info('[Content] Matched content:', selectedIds, 'coupons:', couponIds)
+
     Taro.showToast({ title: `已匹配${selectedIds.length}个内容`, icon: 'success' })
-    console.info('[Content] Matched content:', selectedIds)
+    setTimeout(() => {
+      Taro.switchTab({ url: '/pages/campaign/index' })
+    }, 1500)
   }
 
   return (

@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro'
 import classnames from 'classnames'
 import CustomerCard from '@/components/CustomerCard'
 import EmptyState from '@/components/EmptyState'
-import { mockCustomers } from '@/data/customers'
+import { useAppStore } from '@/store/useAppStore'
 import styles from './index.module.scss'
 
 type TabKey = 'all' | 'consulted' | 'postSurgery' | 'inactive'
@@ -19,9 +19,10 @@ const tabs: { key: TabKey; label: string }[] = [
 export default function PoolPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('all')
   const [searchText, setSearchText] = useState('')
+  const customers = useAppStore((s) => s.customers)
 
   const filteredCustomers = useMemo(() => {
-    let result = mockCustomers
+    let result = customers
     if (searchText) {
       result = result.filter(
         (c) =>
@@ -40,12 +41,12 @@ export default function PoolPage() {
       default:
         return result
     }
-  }, [activeTab, searchText])
+  }, [activeTab, searchText, customers])
 
-  const totalCustomers = mockCustomers.length
+  const totalCustomers = customers.length
   const newThisWeek = 4
   const activeRate = Math.round(
-    (mockCustomers.filter((c) => c.activityLevel === '高互动' || c.activityLevel === '中互动').length / totalCustomers) * 100
+    (customers.filter((c) => c.activityLevel === '高互动' || c.activityLevel === '中互动').length / totalCustomers) * 100
   )
 
   const handleImportWechat = () => {

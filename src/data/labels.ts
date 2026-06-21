@@ -66,7 +66,7 @@ export const mockFilterPresets: FilterPreset[] = [
   {
     id: 'fp1',
     name: '七夕光电种草',
-    description: '近3月咨询光电、预算中等、有互动未成交',
+    description: '近3月咨询光电、预算中等、有互动、未成交',
     filters: { project: ['光电'], price: ['中'], activity: ['高互动', '中互动'] }
   },
   {
