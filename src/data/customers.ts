@@ -1,0 +1,271 @@
+import type { Customer } from '@/types/customer'
+
+export const mockCustomers: Customer[] = [
+  {
+    id: 'c001',
+    name: '林小姐',
+    avatar: 'https://picsum.photos/id/64/200/200',
+    phone: '138****6789',
+    wechatNote: '想做光子嫩肤，预算1w左右',
+    tags: [
+      { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
+      { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+    ],
+    consultProjects: ['光电'],
+    surgeryStage: '术前',
+    priceSensitivity: '中',
+    activityLevel: '高互动',
+    lastActiveTime: '2026-06-20',
+    totalConsultations: 3,
+    totalSpent: 0,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-03-15'
+  },
+  {
+    id: 'c002',
+    name: '王女士',
+    avatar: 'https://picsum.photos/id/91/200/200',
+    phone: '139****2345',
+    wechatNote: '热玛吉术后，恢复良好',
+    tags: [
+      { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
+      { id: 't7', name: '术后1月', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '高', type: 'price', color: '#EF4444' }
+    ],
+    consultProjects: ['光电', '抗衰'],
+    surgeryStage: '术后1月',
+    priceSensitivity: '高',
+    activityLevel: '中互动',
+    lastActiveTime: '2026-06-18',
+    totalConsultations: 5,
+    totalSpent: 28000,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-01-20'
+  },
+  {
+    id: 'c003',
+    name: '张女士',
+    avatar: 'https://picsum.photos/id/177/200/200',
+    phone: '137****8901',
+    wechatNote: '咨询过玻尿酸隆鼻',
+    tags: [
+      { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
+      { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '中', type: 'price', color: '#F59E0B' }
+    ],
+    consultProjects: ['注射'],
+    surgeryStage: '术前',
+    priceSensitivity: '中',
+    activityLevel: '高互动',
+    lastActiveTime: '2026-06-21',
+    totalConsultations: 2,
+    totalSpent: 0,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-04-10'
+  },
+  {
+    id: 'c004',
+    name: '陈小姐',
+    avatar: 'https://picsum.photos/id/338/200/200',
+    phone: '136****5678',
+    wechatNote: '双眼皮术后3个月，很满意',
+    tags: [
+      { id: 't3', name: '手术', type: 'project', color: '#8B5CF6' },
+      { id: 't8', name: '术后3月', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '低', type: 'price', color: '#10B981' }
+    ],
+    consultProjects: ['手术'],
+    surgeryStage: '术后3月',
+    priceSensitivity: '低',
+    activityLevel: '低互动',
+    lastActiveTime: '2026-06-10',
+    totalConsultations: 4,
+    totalSpent: 15600,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2025-12-05'
+  },
+  {
+    id: 'c005',
+    name: '刘女士',
+    avatar: 'https://picsum.photos/id/1027/200/200',
+    phone: '135****3456',
+    wechatNote: '敏感肌护理咨询',
+    tags: [
+      { id: 't4', name: '皮肤管理', type: 'project', color: '#8B5CF6' },
+      { id: 't10', name: '沉默', type: 'activity', color: '#6B7280' }
+    ],
+    consultProjects: ['皮肤管理'],
+    surgeryStage: '术前',
+    priceSensitivity: '中',
+    activityLevel: '沉默',
+    lastActiveTime: '2026-05-28',
+    totalConsultations: 1,
+    totalSpent: 0,
+    isSensitive: true,
+    unsubscribed: false,
+    createdAt: '2026-05-01'
+  },
+  {
+    id: 'c006',
+    name: '赵小姐',
+    avatar: 'https://picsum.photos/id/64/200/200',
+    phone: '134****7890',
+    wechatNote: '想做热拉提，等优惠',
+    tags: [
+      { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
+      { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '高', type: 'price', color: '#EF4444' },
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+    ],
+    consultProjects: ['光电', '抗衰'],
+    surgeryStage: '术前',
+    priceSensitivity: '高',
+    activityLevel: '高互动',
+    lastActiveTime: '2026-06-22',
+    totalConsultations: 4,
+    totalSpent: 0,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-02-14'
+  },
+  {
+    id: 'c007',
+    name: '孙女士',
+    avatar: 'https://picsum.photos/id/91/200/200',
+    phone: '133****1234',
+    wechatNote: '线雕术后1周，稍肿胀',
+    tags: [
+      { id: 't3', name: '手术', type: 'project', color: '#8B5CF6' },
+      { id: 't11', name: '术后1周', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '低', type: 'price', color: '#10B981' }
+    ],
+    consultProjects: ['手术', '抗衰'],
+    surgeryStage: '术后1周',
+    priceSensitivity: '低',
+    activityLevel: '中互动',
+    lastActiveTime: '2026-06-19',
+    totalConsultations: 6,
+    totalSpent: 45000,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2025-11-20'
+  },
+  {
+    id: 'c008',
+    name: '周小姐',
+    avatar: 'https://picsum.photos/id/177/200/200',
+    phone: '132****5678',
+    wechatNote: '水光针术后恢复中',
+    tags: [
+      { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
+      { id: 't11', name: '术后1周', type: 'stage', color: '#3B82F6' },
+      { id: 't12', name: '中互动', type: 'activity', color: '#F59E0B' }
+    ],
+    consultProjects: ['注射', '皮肤管理'],
+    surgeryStage: '术后1周',
+    priceSensitivity: '中',
+    activityLevel: '中互动',
+    lastActiveTime: '2026-06-17',
+    totalConsultations: 3,
+    totalSpent: 8800,
+    isSensitive: false,
+    unsubscribed: true,
+    createdAt: '2026-03-28'
+  },
+  {
+    id: 'c009',
+    name: '吴女士',
+    avatar: 'https://picsum.photos/id/338/200/200',
+    phone: '131****9012',
+    wechatNote: '想了解腰腹环吸',
+    tags: [
+      { id: 't13', name: '体雕', type: 'project', color: '#8B5CF6' },
+      { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+    ],
+    consultProjects: ['体雕'],
+    surgeryStage: '术前',
+    priceSensitivity: '中',
+    activityLevel: '高互动',
+    lastActiveTime: '2026-06-21',
+    totalConsultations: 2,
+    totalSpent: 0,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-05-15'
+  },
+  {
+    id: 'c010',
+    name: '郑小姐',
+    avatar: 'https://picsum.photos/id/1027/200/200',
+    phone: '130****3456',
+    wechatNote: '超声刀术后半年，考虑补打',
+    tags: [
+      { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
+      { id: 't14', name: '术后半年', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '低', type: 'price', color: '#10B981' }
+    ],
+    consultProjects: ['光电', '抗衰'],
+    surgeryStage: '术后半年',
+    priceSensitivity: '低',
+    activityLevel: '中互动',
+    lastActiveTime: '2026-06-15',
+    totalConsultations: 8,
+    totalSpent: 68000,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2025-08-10'
+  },
+  {
+    id: 'c011',
+    name: '黄女士',
+    avatar: 'https://picsum.photos/id/64/200/200',
+    phone: '158****7890',
+    wechatNote: '面部填充咨询，怕疼',
+    tags: [
+      { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
+      { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '高', type: 'price', color: '#EF4444' },
+      { id: 't15', name: '低互动', type: 'activity', color: '#6B7280' }
+    ],
+    consultProjects: ['注射'],
+    surgeryStage: '术前',
+    priceSensitivity: '高',
+    activityLevel: '低互动',
+    lastActiveTime: '2026-06-05',
+    totalConsultations: 1,
+    totalSpent: 0,
+    isSensitive: true,
+    unsubscribed: false,
+    createdAt: '2026-04-22'
+  },
+  {
+    id: 'c012',
+    name: '李小姐',
+    avatar: 'https://picsum.photos/id/91/200/200',
+    phone: '159****1234',
+    wechatNote: '光子嫩肤术后1月，效果满意',
+    tags: [
+      { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
+      { id: 't7', name: '术后1月', type: 'stage', color: '#3B82F6' },
+      { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+    ],
+    consultProjects: ['光电', '皮肤管理'],
+    surgeryStage: '术后1月',
+    priceSensitivity: '中',
+    activityLevel: '高互动',
+    lastActiveTime: '2026-06-22',
+    totalConsultations: 3,
+    totalSpent: 12800,
+    isSensitive: false,
+    unsubscribed: false,
+    createdAt: '2026-02-28'
+  }
+]

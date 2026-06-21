@@ -1,0 +1,247 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 160rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  padding: $spacing-lg;
+  border-radius: 0 0 $radius-xl $radius-xl;
+}
+
+.headerTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  margin-bottom: $spacing-xs;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.statsGrid {
+  display: flex;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+}
+
+.statCard {
+  flex: 1;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  text-align: center;
+  box-shadow: $shadow-card;
+}
+
+.statValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  display: block;
+}
+
+.statValueDraft {
+  color: #6B7280;
+}
+
+.statValueScheduled {
+  color: #3B82F6;
+}
+
+.statValueSent {
+  color: $color-success;
+}
+
+.statValueFailed {
+  color: $color-error;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg $spacing-lg $spacing-sm;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.createBtn {
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  padding: 0 $spacing-lg;
+  height: $button-height-sm;
+  border-radius: $radius-round;
+  @include button-reset;
+  white-space: nowrap;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.campaignList {
+  padding: 0 $spacing-lg;
+}
+
+.emptyActions {
+  margin-top: $spacing-lg;
+  display: flex;
+  justify-content: center;
+}
+
+.emptyCreateBtn {
+  background: $color-primary;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  padding: 0 $spacing-xl;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  @include button-reset;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.newCampaignModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  @include flex-center;
+}
+
+.modalContent {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  width: 640rpx;
+  max-height: 80vh;
+}
+
+.modalTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+  text-align: center;
+}
+
+.formItem {
+  margin-bottom: $spacing-md;
+}
+
+.formLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+  display: block;
+}
+
+.formInput {
+  width: 100%;
+  height: 80rpx;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: 0 $spacing-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.formToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.formToggleLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.modalActions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.modalCancelBtn {
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: $color-bg-page;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  @include button-reset;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.modalConfirmBtn {
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  @include button-reset;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.toggle {
+  width: 80rpx;
+  height: 48rpx;
+  border-radius: $radius-round;
+  background: $color-border;
+  position: relative;
+  transition: all $transition-base;
+}
+
+.toggleActive {
+  background: $color-primary;
+}
+
+.toggleDot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-text-white;
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  transition: all $transition-base;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.toggleActive .toggleDot {
+  left: 36rpx;
+}

@@ -1,0 +1,143 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: $radius-round;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-xs;
+}
+
+.name {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.unsubTag {
+  font-size: $font-size-xs;
+  color: $color-error;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.sensitiveTag {
+  font-size: $font-size-xs;
+  color: $color-warning;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
+
+.note {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  @include text-ellipsis;
+}
+
+.lastActive {
+  font-size: $font-size-xs;
+  color: $color-text-disabled;
+  white-space: nowrap;
+  margin-left: $spacing-sm;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+}
+
+.tag {
+  font-size: $font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.tagProject {
+  background: rgba(139, 92, 246, 0.1);
+  color: $color-tag-project;
+}
+
+.tagStage {
+  background: rgba(59, 130, 246, 0.1);
+  color: $color-tag-stage;
+}
+
+.tagPrice {
+  background: rgba(245, 158, 11, 0.1);
+  color: $color-tag-price;
+}
+
+.tagActivityHigh {
+  background: rgba(16, 185, 129, 0.1);
+  color: $color-tag-active;
+}
+
+.tagActivityMid {
+  background: rgba(139, 92, 246, 0.1);
+  color: $color-primary;
+}
+
+.tagActivityLow {
+  background: rgba(245, 158, 11, 0.1);
+  color: $color-warning;
+}
+
+.tagActivitySilent {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6B7280;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.stat {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.spent {
+  font-size: $font-size-sm;
+  color: $color-error;
+  font-weight: $font-weight-medium;
+}

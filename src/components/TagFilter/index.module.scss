@@ -1,0 +1,119 @@
+@use '@/styles/variables.scss' as *;
+
+.group {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.groupName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.groupType {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  background: $color-bg-hover;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  border-radius: $radius-md;
+  background: $color-bg-page;
+  border: 2rpx solid transparent;
+  transition: all $transition-fast;
+  min-width: 120rpx;
+  justify-content: center;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.optionSelected {
+  border-color: $color-primary;
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.optionProject.optionSelected {
+  border-color: $color-tag-project;
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.optionStage.optionSelected {
+  border-color: $color-tag-stage;
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.optionPrice.optionSelected {
+  border-color: $color-tag-price;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.optionActivity.optionSelected {
+  border-color: $color-tag-active;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.optionCustom.optionSelected {
+  border-color: $color-primary;
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.optionText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-right: $spacing-xs;
+}
+
+.optionTextSelected {
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.optionProject .optionTextSelected {
+  color: $color-tag-project;
+}
+
+.optionStage .optionTextSelected {
+  color: $color-tag-stage;
+}
+
+.optionPrice .optionTextSelected {
+  color: $color-tag-price;
+}
+
+.optionActivity .optionTextSelected {
+  color: $color-tag-active;
+}
+
+.optionCount {
+  font-size: $font-size-xs;
+  color: $color-text-disabled;
+}
+
+.optionCountSelected {
+  color: $color-primary-light;
+}

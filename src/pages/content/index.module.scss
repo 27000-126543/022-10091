@@ -1,0 +1,160 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 180rpx;
+}
+
+.tabs {
+  display: flex;
+  padding: $spacing-md $spacing-lg;
+  gap: $spacing-sm;
+  background: $color-bg-card;
+  box-shadow: $shadow-card;
+}
+
+.tab {
+  font-size: $font-size-sm;
+  padding: 12rpx 32rpx;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+  color: $color-text-secondary;
+  @include button-reset;
+  height: 64rpx;
+  white-space: nowrap;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.tabActive {
+  background: $color-primary;
+  color: $color-text-white;
+}
+
+.couponSection {
+  padding: $spacing-lg;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionMore {
+  font-size: $font-size-sm;
+  color: $color-primary;
+}
+
+.couponScroll {
+  width: 100%;
+}
+
+.couponList {
+  display: flex;
+  gap: $spacing-md;
+  padding-bottom: $spacing-sm;
+}
+
+.couponCard {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-lg;
+  min-width: 240rpx;
+  max-width: 280rpx;
+  transition: all $transition-fast;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.couponDiscount {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.couponName {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: $spacing-xs;
+  @include text-ellipsis;
+}
+
+.couponValid {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4rpx;
+}
+
+.couponUsage {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4rpx;
+}
+
+.contentList {
+  padding: 0 $spacing-lg;
+}
+
+.selectedBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $spacing-lg;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  box-shadow: $shadow-float;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectedInfo {
+  display: flex;
+  align-items: center;
+}
+
+.selectedCount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.selectedLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-left: $spacing-xs;
+}
+
+.matchBtn {
+  background: linear-gradient(135deg, $color-gradient-start 0%, $color-gradient-end 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  padding: 0 $spacing-xl;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  @include button-reset;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

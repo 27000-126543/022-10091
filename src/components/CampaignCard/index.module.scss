@@ -1,0 +1,113 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-fast;
+
+  &:active {
+    opacity: 0.95;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.name {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  flex: 1;
+  @include text-ellipsis;
+  margin-right: $spacing-sm;
+}
+
+.status {
+  font-size: $font-size-xs;
+  padding: 6rpx 20rpx;
+  border-radius: $radius-round;
+  white-space: nowrap;
+  font-weight: $font-weight-medium;
+}
+
+.statusDraft {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6B7280;
+}
+
+.statusScheduled {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3B82F6;
+}
+
+.statusSending {
+  background: rgba(139, 92, 246, 0.1);
+  color: $color-primary;
+}
+
+.statusSent {
+  background: rgba(16, 185, 129, 0.1);
+  color: $color-success;
+}
+
+.statusFailed {
+  background: rgba(239, 68, 68, 0.1);
+  color: $color-error;
+}
+
+.filterRow, .contentRow {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+}
+
+.filterLabel, .contentLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  min-width: 140rpx;
+  flex-shrink: 0;
+}
+
+.filterValue, .contentValue {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  flex: 1;
+  @include text-ellipsis-multi(1);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.audience {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.time {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  flex: 1;
+}
+
+.excludeTag {
+  font-size: $font-size-xs;
+  color: $color-success;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  white-space: nowrap;
+}
