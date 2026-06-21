@@ -35,8 +35,8 @@ interface AppState {
 
   markCustomerUnsubscribed: (customerId: string) => void
 
-  getFilteredCustomers: () => Customer[]
-  getFilterSummary: () => string
+  getFilteredCustomers: (excludeSensitiveOverride?: boolean) => Customer[]
+  getFilterSummary: (excludeSensitiveOverride?: boolean) => string
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -123,14 +123,16 @@ export const useAppStore = create<AppState>((set, get) => ({
     }))
   },
 
-  getFilteredCustomers: () => {
+  getFilteredCustomers: (excludeSensitiveOverride) => {
     const state = get()
+    const useExcludeSensitive = excludeSensitiveOverride !== undefined ? excludeSensitiveOverride : state.excludeSensitive
     let filtered = state.customers
 
     const projectFilters = state.selectedFilters['project'] || []
     const stageFilters = state.selectedFilters['stage'] || []
     const priceFilters = state.selectedFilters['price'] || []
     const activityFilters = state.selectedFilters['activity'] || []
+    const customFilters = state.selectedFilters['custom'] || []
 
     if (projectFilters.length > 0) {
       filtered = filtered.filter((c) => c.consultProjects.some((p) => projectFilters.includes(p)))
@@ -144,8 +146,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (activityFilters.length > 0) {
       filtered = filtered.filter((c) => activityFilters.includes(c.activityLevel))
     }
-    if (state.excludeSensitive) {
-      filtered = filtered.filter((c) => !c.isSensitive && !c.unsubscribed)
+    if (customFilters.length > 0) {
+      filtered = filtered.filter((c) => c.tags.some((t) => customFilters.includes(t.name)))
+    }
+
+    filtered = filtered.filter((c) => !c.unsubscribed)
+
+    if (useExcludeSensitive) {
+      filtered = filtered.filter((c) => !c.isSensitive)
     }
     if (state.activePreset === 'fp1') {
       const threeMonthsAgo = new Date()
@@ -156,20 +164,23 @@ export const useAppStore = create<AppState>((set, get) => ({
     return filtered
   },
 
-  getFilterSummary: () => {
+  getFilterSummary: (excludeSensitiveOverride) => {
     const state = get()
+    const useExcludeSensitive = excludeSensitiveOverride !== undefined ? excludeSensitiveOverride : state.excludeSensitive
     const parts: string[] = []
     const projectFilters = state.selectedFilters['project'] || []
     const stageFilters = state.selectedFilters['stage'] || []
     const priceFilters = state.selectedFilters['price'] || []
     const activityFilters = state.selectedFilters['activity'] || []
+    const customFilters = state.selectedFilters['custom'] || []
 
     if (projectFilters.length > 0) parts.push('咨询' + projectFilters.join('/'))
     if (stageFilters.length > 0) parts.push(stageFilters.join('/'))
     if (priceFilters.length > 0) parts.push('预算' + priceFilters.join('/'))
     if (activityFilters.length > 0) parts.push(activityFilters.join('/'))
+    if (customFilters.length > 0) parts.push(customFilters.join('/'))
     if (state.activePreset === 'fp1') parts.push('近3月未成交')
-    if (state.excludeSensitive) parts.push('排敏排退订')
+    if (useExcludeSensitive) parts.push('排敏排退订')
 
     return parts.join(' + ') || '未设置筛选条件'
   }

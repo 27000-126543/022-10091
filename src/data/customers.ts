@@ -10,7 +10,8 @@ export const mockCustomers: Customer[] = [
     tags: [
       { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
       { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
-      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' },
+      { id: 'c1', name: 'VIP客户', type: 'custom', color: '#EC4899' }
     ],
     consultProjects: ['光电'],
     surgeryStage: '术前',
@@ -54,7 +55,8 @@ export const mockCustomers: Customer[] = [
     tags: [
       { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
       { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
-      { id: 't5', name: '中', type: 'price', color: '#F59E0B' }
+      { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
+      { id: 'c2', name: '转介绍客户', type: 'custom', color: '#06B6D4' }
     ],
     consultProjects: ['注射'],
     surgeryStage: '术前',
@@ -76,7 +78,8 @@ export const mockCustomers: Customer[] = [
     tags: [
       { id: 't3', name: '手术', type: 'project', color: '#8B5CF6' },
       { id: 't8', name: '术后3月', type: 'stage', color: '#3B82F6' },
-      { id: 't5', name: '低', type: 'price', color: '#10B981' }
+      { id: 't5', name: '低', type: 'price', color: '#10B981' },
+      { id: 'c3', name: '复购客户', type: 'custom', color: '#10B981' }
     ],
     consultProjects: ['手术'],
     surgeryStage: '术后3月',
@@ -164,7 +167,8 @@ export const mockCustomers: Customer[] = [
     tags: [
       { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
       { id: 't11', name: '术后1周', type: 'stage', color: '#3B82F6' },
-      { id: 't12', name: '中互动', type: 'activity', color: '#F59E0B' }
+      { id: 't12', name: '中互动', type: 'activity', color: '#F59E0B' },
+      { id: 'cu_unsub', name: '已退订', type: 'custom', color: '#EF4444' }
     ],
     consultProjects: ['注射', '皮肤管理'],
     surgeryStage: '术后1周',
@@ -187,7 +191,8 @@ export const mockCustomers: Customer[] = [
       { id: 't13', name: '体雕', type: 'project', color: '#8B5CF6' },
       { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
       { id: 't5', name: '中', type: 'price', color: '#F59E0B' },
-      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' }
+      { id: 't9', name: '高互动', type: 'activity', color: '#10B981' },
+      { id: 'c4', name: '孕期客户', type: 'custom', color: '#F59E0B' }
     ],
     consultProjects: ['体雕'],
     surgeryStage: '术前',
@@ -209,7 +214,9 @@ export const mockCustomers: Customer[] = [
     tags: [
       { id: 't1', name: '光电', type: 'project', color: '#8B5CF6' },
       { id: 't14', name: '术后半年', type: 'stage', color: '#3B82F6' },
-      { id: 't5', name: '低', type: 'price', color: '#10B981' }
+      { id: 't5', name: '低', type: 'price', color: '#10B981' },
+      { id: 'c1', name: 'VIP客户', type: 'custom', color: '#EC4899' },
+      { id: 'c3', name: '复购客户', type: 'custom', color: '#10B981' }
     ],
     consultProjects: ['光电', '抗衰'],
     surgeryStage: '术后半年',
@@ -232,7 +239,8 @@ export const mockCustomers: Customer[] = [
       { id: 't2', name: '注射', type: 'project', color: '#8B5CF6' },
       { id: 't6', name: '术前', type: 'stage', color: '#3B82F6' },
       { id: 't5', name: '高', type: 'price', color: '#EF4444' },
-      { id: 't15', name: '低互动', type: 'activity', color: '#6B7280' }
+      { id: 't15', name: '低互动', type: 'activity', color: '#6B7280' },
+      { id: 'c5', name: '投诉风险', type: 'custom', color: '#EF4444' }
     ],
     consultProjects: ['注射'],
     surgeryStage: '术前',

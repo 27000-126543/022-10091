@@ -18,17 +18,19 @@ export default function CampaignPage() {
   const excludeSensitive = useAppStore((s) => s.excludeSensitive)
   const clearSelectedContent = useAppStore((s) => s.clearSelectedContent)
 
+  const setExcludeSensitive = useAppStore((s) => s.setExcludeSensitive)
+
   const [showCreate, setShowCreate] = useState(false)
   const [newName, setNewName] = useState('')
-  const [newExcludeSensitive, setNewExcludeSensitive] = useState(true)
+  const [newExcludeSensitive, setNewExcludeSensitive] = useState(excludeSensitive)
 
   const draftCount = campaigns.filter((c) => c.status === 'draft').length
   const scheduledCount = campaigns.filter((c) => c.status === 'scheduled').length
   const sentCount = campaigns.filter((c) => c.status === 'sent').length
   const failedCount = campaigns.filter((c) => c.status === 'failed').length
 
-  const audienceCount = getFilteredCustomers().length
-  const filterSummary = getFilterSummary()
+  const liveAudienceCount = getFilteredCustomers(newExcludeSensitive).length
+  const liveFilterSummary = getFilterSummary(newExcludeSensitive)
   const hasContent = selectedContent.items.length > 0
   const contentTitle = selectedContent.items.length > 0
     ? selectedContent.items[0].title
@@ -43,6 +45,11 @@ export default function CampaignPage() {
     ? mockCoupons.filter((c) => selectedContent.couponIds.includes(c.id)).map((c) => c.name)
     : []
 
+  const openCreate = () => {
+    setNewExcludeSensitive(excludeSensitive)
+    setShowCreate(true)
+  }
+
   const handleCampaignClick = (id: string) => {
     Taro.navigateTo({ url: `/pages/campaign-detail/index?id=${id}` })
   }
@@ -53,18 +60,23 @@ export default function CampaignPage() {
       return
     }
 
+    const finalAudienceCount = getFilteredCustomers(newExcludeSensitive).length
+    const finalFilterSummary = getFilterSummary(newExcludeSensitive)
+
+    setExcludeSensitive(newExcludeSensitive)
+
     const newCampaign = {
       id: `cm_${Date.now()}`,
       name: newName.trim(),
       status: 'draft' as const,
       statusName: '草稿',
-      audienceCount,
+      audienceCount: finalAudienceCount,
       contentTitle: contentSummary || contentTitle,
       contentType: contentType,
       scheduledTime: '',
       sentTime: null,
       excludeSensitive: newExcludeSensitive,
-      filterSummary: filterSummary || '未设置筛选条件',
+      filterSummary: finalFilterSummary || '未设置筛选条件',
       createdAt: dayjs().format('YYYY-MM-DD')
     }
 
@@ -105,7 +117,7 @@ export default function CampaignPage() {
 
       <View className={styles.sectionHeader}>
         <Text className={styles.sectionTitle}>计划列表</Text>
-        <View className={styles.createBtn} onClick={() => setShowCreate(true)}>
+        <View className={styles.createBtn} onClick={openCreate}>
           <Text>+ 新建</Text>
         </View>
       </View>
@@ -139,8 +151,8 @@ export default function CampaignPage() {
             <View className={styles.formItem}>
               <Text className={styles.formLabel}>筛选条件</Text>
               <View className={styles.formReadonly}>
-                <Text className={styles.formReadonlyText}>{filterSummary}</Text>
-                <Text className={styles.formReadonlySub}>匹配{audienceCount}人</Text>
+                <Text className={styles.formReadonlyText}>{liveFilterSummary}</Text>
+                <Text className={styles.formReadonlySub}>匹配{liveAudienceCount}人</Text>
               </View>
             </View>
 
