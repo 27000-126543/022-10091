@@ -12,5 +12,6 @@ export interface Campaign {
   sentTime: string | null
   excludeSensitive: boolean
   filterSummary: string
+  customerIds: string[]
   createdAt: string
 }

@@ -32,6 +32,7 @@ interface AppState {
   clearSelectedContent: () => void
 
   addCampaign: (campaign: Campaign) => void
+  getCampaignById: (id: string) => Campaign | undefined
 
   markCustomerUnsubscribed: (customerId: string) => void
 
@@ -111,6 +112,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     set((state) => ({
       campaigns: [campaign, ...state.campaigns]
     }))
+  },
+
+  getCampaignById: (id) => {
+    const state = get()
+    return state.campaigns.find((c) => c.id === id)
   },
 
   markCustomerUnsubscribed: (customerId) => {

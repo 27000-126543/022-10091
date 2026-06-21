@@ -201,7 +201,7 @@ export const mockCustomers: Customer[] = [
     lastActiveTime: '2026-06-21',
     totalConsultations: 2,
     totalSpent: 0,
-    isSensitive: false,
+    isSensitive: true,
     unsubscribed: false,
     createdAt: '2026-05-15'
   },

@@ -60,8 +60,10 @@ export default function CampaignPage() {
       return
     }
 
-    const finalAudienceCount = getFilteredCustomers(newExcludeSensitive).length
+    const finalAudience = getFilteredCustomers(newExcludeSensitive)
+    const finalAudienceCount = finalAudience.length
     const finalFilterSummary = getFilterSummary(newExcludeSensitive)
+    const finalCustomerIds = finalAudience.map((c) => c.id)
 
     setExcludeSensitive(newExcludeSensitive)
 
@@ -77,6 +79,7 @@ export default function CampaignPage() {
       sentTime: null,
       excludeSensitive: newExcludeSensitive,
       filterSummary: finalFilterSummary || '未设置筛选条件',
+      customerIds: finalCustomerIds,
       createdAt: dayjs().format('YYYY-MM-DD')
     }
 
