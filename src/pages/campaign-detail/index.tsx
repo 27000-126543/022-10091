@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
+import classnames from 'classnames'
 import { useAppStore } from '@/store/useAppStore'
 import CustomerCard from '@/components/CustomerCard'
 import EmptyState from '@/components/EmptyState'
 import dayjs from 'dayjs'
 import styles from './index.module.scss'
+
+type FilterTab = 'all' | 'valid' | 'unsubscribed' | 'sensitive'
 
 export default function CampaignDetailPage() {
   const router = useRouter()
@@ -15,22 +18,35 @@ export default function CampaignDetailPage() {
   const getFilterSummary = useAppStore((s) => s.getFilterSummary)
   const setExcludeSensitive = useAppStore((s) => s.setExcludeSensitive)
   const customers = useAppStore((s) => s.customers)
+  const campaigns = useAppStore((s) => s.campaigns)
 
-  const campaign = useMemo(() => getCampaignById(id), [id, customers])
+  const campaign = useMemo(() => getCampaignById(id), [id, campaigns, customers])
   const [showRefresh, setShowRefresh] = useState(false)
+  const [activeTab, setActiveTab] = useState<FilterTab>('all')
 
-  const { snapshotCustomers, excludedCustomers, validCustomers, hasExcluded } = useMemo(() => {
-    if (!campaign) return { snapshotCustomers: [], excludedCustomers: [], validCustomers: [], hasExcluded: false }
+  const { snapshotCustomers, excludedCustomers, sensitiveCustomers, validCustomers, hasExcluded } = useMemo(() => {
+    if (!campaign) return { snapshotCustomers: [], excludedCustomers: [], sensitiveCustomers: [], validCustomers: [], hasExcluded: false }
     const snap = campaign.customerIds.map((cid) => customers.find((c) => c.id === cid)).filter(Boolean) as typeof customers
     const excluded = snap.filter((c) => c.unsubscribed)
-    const valid = snap.filter((c) => !c.unsubscribed)
+    const sensitive = snap.filter((c) => c.isSensitive && !c.unsubscribed)
+    const valid = snap.filter((c) => !c.unsubscribed && !c.isSensitive)
     return {
       snapshotCustomers: snap,
       excludedCustomers: excluded,
+      sensitiveCustomers: sensitive,
       validCustomers: valid,
       hasExcluded: excluded.length > 0
     }
   }, [campaign, customers])
+
+  const displayCustomers = useMemo(() => {
+    switch (activeTab) {
+      case 'valid': return validCustomers
+      case 'unsubscribed': return excludedCustomers
+      case 'sensitive': return sensitiveCustomers
+      default: return snapshotCustomers
+    }
+  }, [activeTab, validCustomers, excludedCustomers, sensitiveCustomers, snapshotCustomers])
 
   const handleRefresh = () => {
     if (!campaign) return
@@ -41,13 +57,20 @@ export default function CampaignDetailPage() {
     if (!campaign) return
     const refreshed = getFilteredCustomers(campaign.excludeSensitive)
     const refreshedIds = refreshed.map((c) => c.id)
+    const oldUnsub = excludedCustomers.map((c) => c.name).join('、')
+    const logDetail = excludedCustomers.length > 0
+      ? `移除退订: ${oldUnsub}，刷新后${refreshedIds.length}人`
+      : `重新生成名单，${refreshedIds.length}人`
 
     const updatedCampaign = {
       ...campaign,
       customerIds: refreshedIds,
       audienceCount: refreshedIds.length,
       filterSummary: getFilterSummary(campaign.excludeSensitive),
-      createdAt: dayjs().format('YYYY-MM-DD')
+      changeLog: [
+        ...campaign.changeLog,
+        { time: dayjs().format('YYYY-MM-DD HH:mm'), action: '刷新', detail: logDetail, count: refreshedIds.length }
+      ]
     }
 
     const allCampaigns = useAppStore.getState().campaigns
@@ -57,7 +80,7 @@ export default function CampaignDetailPage() {
 
     Taro.showToast({ title: '名单已刷新', icon: 'success' })
     setShowRefresh(false)
-    console.info('[Campaign] Refreshed:', updatedCampaign)
+    setActiveTab('all')
   }
 
   const handleCustomerClick = (customerId: string) => {
@@ -72,6 +95,13 @@ export default function CampaignDetailPage() {
     )
   }
 
+  const tabs: { key: FilterTab; label: string; count: number }[] = [
+    { key: 'all', label: '全部', count: snapshotCustomers.length },
+    { key: 'valid', label: '有效', count: validCustomers.length },
+    { key: 'unsubscribed', label: '已退订', count: excludedCustomers.length },
+    { key: 'sensitive', label: '敏感', count: sensitiveCustomers.length }
+  ]
+
   return (
     <View className={styles.container}>
       <View className={styles.header}>
@@ -84,7 +114,7 @@ export default function CampaignDetailPage() {
       <View className={styles.metaGrid}>
         <View className={styles.metaItem}>
           <Text className={styles.metaLabel}>受众人数</Text>
-          <Text className={styles.metaValue}>{campaign.audienceCount} 人</Text>
+          <Text className={styles.metaValue}>{validCustomers.length} 人</Text>
         </View>
         <View className={styles.metaItem}>
           <Text className={styles.metaLabel}>排敏状态</Text>
@@ -112,7 +142,7 @@ export default function CampaignDetailPage() {
           <View className={styles.warningIcon}>⚠️</View>
           <View className={styles.warningBody}>
             <Text className={styles.warningTitle}>名单中有 {excludedCustomers.length} 位客户已退订</Text>
-            <Text className={styles.warningDesc}>这些客户将被自动排除，建议刷新名单使用最新口径</Text>
+            <Text className={styles.warningDesc}>这些客户已被自动排除，建议刷新名单使用最新口径</Text>
           </View>
           <View className={styles.refreshBtn} onClick={handleRefresh}>
             <Text>刷新</Text>
@@ -122,50 +152,103 @@ export default function CampaignDetailPage() {
 
       <View className={styles.sectionHeader}>
         <Text className={styles.sectionTitle}>入选名单</Text>
-        <Text className={styles.sectionSub}>快照共 {snapshotCustomers.length} 人，有效 {validCustomers.length} 人</Text>
+        <Text className={styles.sectionSub}>快照 {snapshotCustomers.length} 人，有效 {validCustomers.length} 人</Text>
+      </View>
+
+      <View className={styles.tabBar}>
+        {tabs.map((tab) => (
+          <View
+            key={tab.key}
+            className={classnames(styles.tab, activeTab === tab.key && styles.tabActive)}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            <Text>{tab.label}</Text>
+            {tab.count > 0 && <Text className={styles.tabCount}>{tab.count}</Text>}
+          </View>
+        ))}
       </View>
 
       <ScrollView scrollY className={styles.listScroll}>
-        {validCustomers.length > 0 && (
-          <View className={styles.listGroup}>
-            {validCustomers.map((customer) => (
-              <CustomerCard key={customer.id} customer={customer} onClick={handleCustomerClick} />
-            ))}
-          </View>
-        )}
+        {displayCustomers.length > 0 ? (
+          displayCustomers.map((customer) => {
+            const isExcl = customer.unsubscribed
+            const isSens = customer.isSensitive && !customer.unsubscribed
+            const customTags = customer.tags.filter((t) => t.type === 'custom')
 
-        {excludedCustomers.length > 0 && (
-          <View className={styles.listGroup}>
-            <View className={styles.groupHeader}>
-              <Text className={styles.groupTitle}>已排除（退订）</Text>
-              <Text className={styles.groupCount}>{excludedCustomers.length} 人</Text>
-            </View>
-            {excludedCustomers.map((customer) => (
-              <View key={customer.id} className={styles.excludedCard} onClick={() => handleCustomerClick(customer.id)}>
-                <Image className={styles.excludedAvatar} src={customer.avatar} mode='aspectFill' />
-                <View className={styles.excludedInfo}>
-                  <Text className={styles.excludedName}>{customer.name}</Text>
-                  <Text className={styles.excludedPhone}>{customer.phone}</Text>
-                  <View className={styles.excludedTags}>
-                    {customer.tags.map((tag) => (
-                      <Text key={tag.id} className={styles.excludedTag} style={{ color: tag.color, borderColor: tag.color }}>
+            if (isExcl) {
+              return (
+                <View key={customer.id} className={styles.excludedCard} onClick={() => handleCustomerClick(customer.id)}>
+                  <Image className={styles.excludedAvatar} src={customer.avatar} mode='aspectFill' />
+                  <View className={styles.excludedInfo}>
+                    <View className={styles.excludedNameRow}>
+                      <Text className={styles.excludedName}>{customer.name}</Text>
+                      <View className={styles.excludedBadge}><Text>已退订</Text></View>
+                    </View>
+                    <Text className={styles.excludedPhone}>{customer.phone}</Text>
+                    <View className={styles.excludedTags}>
+                      {customTags.length > 0 && customTags.map((tag) => (
+                        <Text key={tag.id} className={styles.customTag} style={{ color: '#EC4899', borderColor: '#EC4899' }}>
+                          {tag.name}
+                        </Text>
+                      ))}
+                      {customer.tags.filter((t) => t.type !== 'custom').map((tag) => (
+                        <Text key={tag.id} className={styles.excludedTag} style={{ color: tag.color, borderColor: tag.color }}>
+                          {tag.name}
+                        </Text>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              )
+            }
+
+            return (
+              <View key={customer.id} className={styles.customerItem}>
+                <CustomerCard customer={customer} onClick={handleCustomerClick} />
+                {isSens && (
+                  <View className={styles.sensitiveStrip}>
+                    <Text>敏感客户{campaign.excludeSensitive ? '（已排除）' : ''}</Text>
+                  </View>
+                )}
+                {customTags.length > 0 && (
+                  <View className={styles.customTagRow}>
+                    {customTags.map((tag) => (
+                      <Text key={tag.id} className={styles.customTag} style={{ color: tag.color, borderColor: tag.color }}>
                         {tag.name}
                       </Text>
                     ))}
                   </View>
-                </View>
-                <View className={styles.excludedBadge}>
-                  <Text>已退订</Text>
+                )}
+              </View>
+            )
+          })
+        ) : (
+          <EmptyState title='暂无客户' description='该筛选条件下没有匹配客户' />
+        )}
+      </ScrollView>
+
+      {campaign.changeLog.length > 0 && (
+        <View className={styles.changeLogSection}>
+          <View className={styles.sectionHeader}>
+            <Text className={styles.sectionTitle}>变更记录</Text>
+          </View>
+          <View className={styles.logList}>
+            {campaign.changeLog.map((entry, idx) => (
+              <View key={idx} className={styles.logItem}>
+                <View className={styles.logDot} />
+                <View className={styles.logBody}>
+                  <View className={styles.logHeader}>
+                    <Text className={styles.logAction}>{entry.action}</Text>
+                    <Text className={styles.logTime}>{entry.time}</Text>
+                  </View>
+                  <Text className={styles.logDetail}>{entry.detail}</Text>
+                  <Text className={styles.logCount}>{entry.count} 人</Text>
                 </View>
               </View>
             ))}
           </View>
-        )}
-
-        {snapshotCustomers.length === 0 && (
-          <EmptyState title='暂无名单' description='该计划还没有匹配到客户' />
-        )}
-      </ScrollView>
+        </View>
+      )}
 
       {showRefresh && (
         <View className={styles.confirmModal} onClick={() => setShowRefresh(false)}>

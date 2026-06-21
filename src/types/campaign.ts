@@ -1,5 +1,12 @@
 export type CampaignStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed'
 
+export interface ChangeLogEntry {
+  time: string
+  action: string
+  detail: string
+  count: number
+}
+
 export interface Campaign {
   id: string
   name: string
@@ -13,5 +20,6 @@ export interface Campaign {
   excludeSensitive: boolean
   filterSummary: string
   customerIds: string[]
+  changeLog: ChangeLogEntry[]
   createdAt: string
 }

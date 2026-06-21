@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 
 interface Props {
   campaign: Campaign
+  hasStaleUnsubscribed?: boolean
   onClick?: (id: string) => void
 }
 
@@ -17,7 +18,7 @@ const statusStyles: Record<string, string> = {
   failed: styles.statusFailed
 }
 
-export default function CampaignCard({ campaign, onClick }: Props) {
+export default function CampaignCard({ campaign, hasStaleUnsubscribed, onClick }: Props) {
   return (
     <View className={styles.card} onClick={() => onClick?.(campaign.id)}>
       <View className={styles.header}>
@@ -37,6 +38,11 @@ export default function CampaignCard({ campaign, onClick }: Props) {
         <Text className={styles.time}>{campaign.scheduledTime || '未设定时间'}</Text>
         {campaign.excludeSensitive && <Text className={styles.excludeTag}>已排除敏感客群</Text>}
       </View>
+      {hasStaleUnsubscribed && (
+        <View className={styles.staleBanner}>
+          <Text className={styles.staleText}>名单包含已退订客户，需要刷新</Text>
+        </View>
+      )}
     </View>
   )
 }

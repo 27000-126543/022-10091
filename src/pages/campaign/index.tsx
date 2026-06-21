@@ -17,6 +17,7 @@ export default function CampaignPage() {
   const getFilterSummary = useAppStore((s) => s.getFilterSummary)
   const excludeSensitive = useAppStore((s) => s.excludeSensitive)
   const clearSelectedContent = useAppStore((s) => s.clearSelectedContent)
+  const customers = useAppStore((s) => s.customers)
 
   const setExcludeSensitive = useAppStore((s) => s.setExcludeSensitive)
 
@@ -80,6 +81,7 @@ export default function CampaignPage() {
       excludeSensitive: newExcludeSensitive,
       filterSummary: finalFilterSummary || '未设置筛选条件',
       customerIds: finalCustomerIds,
+      changeLog: [{ time: dayjs().format('YYYY-MM-DD HH:mm'), action: '创建', detail: '初始化名单', count: finalAudienceCount }],
       createdAt: dayjs().format('YYYY-MM-DD')
     }
 
@@ -128,9 +130,20 @@ export default function CampaignPage() {
       <ScrollView scrollY style={{ height: 'calc(100vh - 520rpx)' }}>
         <View className={styles.campaignList}>
           {campaigns.length > 0 ? (
-            campaigns.map((campaign) => (
-              <CampaignCard key={campaign.id} campaign={campaign} onClick={handleCampaignClick} />
-            ))
+            campaigns.map((campaign) => {
+              const hasStale = campaign.customerIds.some((cid) => {
+                const c = customers.find((cu) => cu.id === cid)
+                return c && c.unsubscribed
+              })
+              return (
+                <CampaignCard
+                  key={campaign.id}
+                  campaign={campaign}
+                  hasStaleUnsubscribed={hasStale}
+                  onClick={handleCampaignClick}
+                />
+              )
+            })
           ) : (
             <EmptyState title='暂无群发计划' description='创建第一个群发计划开始运营' />
           )}

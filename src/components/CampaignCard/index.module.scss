@@ -111,3 +111,17 @@
   border-radius: $radius-xs;
   white-space: nowrap;
 }
+
+.staleBanner {
+  margin-top: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: $radius-sm;
+  border: 1rpx solid rgba(245, 158, 11, 0.3);
+}
+
+.staleText {
+  font-size: $font-size-sm;
+  color: #B45309;
+  font-weight: $font-weight-medium;
+}

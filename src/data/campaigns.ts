@@ -1,5 +1,7 @@
 import type { Campaign } from '@/types/campaign'
 
+const now = '2026-06-22 10:00'
+
 export const mockCampaigns: Campaign[] = [
   {
     id: 'cm1',
@@ -14,6 +16,7 @@ export const mockCampaigns: Campaign[] = [
     excludeSensitive: true,
     filterSummary: '咨询光电 + 预算中等 + 有互动未成交',
     customerIds: ['c001', 'c006', 'c009'],
+    changeLog: [{ time: '2026-06-19 09:00', action: '创建', detail: '初始化名单', count: 3 }],
     createdAt: '2026-06-19'
   },
   {
@@ -29,6 +32,7 @@ export const mockCampaigns: Campaign[] = [
     excludeSensitive: true,
     filterSummary: '术后1周至1月客户',
     customerIds: ['c002', 'c007', 'c008', 'c012'],
+    changeLog: [{ time: '2026-06-21 14:00', action: '创建', detail: '初始化名单', count: 4 }],
     createdAt: '2026-06-21'
   },
   {
@@ -44,6 +48,7 @@ export const mockCampaigns: Campaign[] = [
     excludeSensitive: true,
     filterSummary: '咨询光电 + 价格敏感高/中',
     customerIds: ['c001', 'c002', 'c006', 'c010', 'c012'],
+    changeLog: [{ time: '2026-06-22 10:00', action: '创建', detail: '初始化名单', count: 5 }],
     createdAt: '2026-06-22'
   },
   {
@@ -59,6 +64,7 @@ export const mockCampaigns: Campaign[] = [
     excludeSensitive: true,
     filterSummary: '低价格敏感 + 沉默/低互动',
     customerIds: ['c004', 'c007', 'c010'],
+    changeLog: [{ time: '2026-06-14 11:00', action: '创建', detail: '初始化名单', count: 3 }],
     createdAt: '2026-06-14'
   },
   {
@@ -74,6 +80,7 @@ export const mockCampaigns: Campaign[] = [
     excludeSensitive: true,
     filterSummary: '注射术后3月以上',
     customerIds: ['c003', 'c008'],
+    changeLog: [{ time: '2026-06-17 16:00', action: '创建', detail: '初始化名单', count: 2 }],
     createdAt: '2026-06-17'
   }
 ]
